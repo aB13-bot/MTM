@@ -1,24 +1,49 @@
-version: '3.8'
-
 services:
-  # 后端 FastAPI 服务
+  # 1. PostgreSQL 数据库
+  postgres_db:
+    image: postgres:18
+    container_name: mtm-postgres
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DATABASE__DB:-default_db}
+      POSTGRES_USER: ${DATABASE__USERNAME:-rDGJeEDqAz}
+      POSTGRES_PASSWORD: ${DATABASE__PASSWORD}
+    env_file:
+      - ./mothertalktome/.env
+    networks:
+      - mtm-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE__USERNAME:-rDGJeEDqAz}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. 后端 FastAPI
   backend:
     build:
       context: ./mothertalktome
       dockerfile: Dockerfile
     container_name: mtm-backend
     restart: always
+    depends_on:
+      postgres_db:
+        condition: service_healthy
     volumes:
       - ./mothertalktome/data:/app/data
       - ./mothertalktome/chroma_db:/app/chroma_db
     env_file:
       - ./mothertalktome/.env
+    environment:
+      DATABASE__HOSTNAME: postgres_db
+      DATABASE__PORT: 5432
     ports:
       - "8000:8000"
     networks:
       - mtm-network
 
-  # 前端 React 服务
+  # 3. 前端 React
   frontend:
     build:
       context: ./mothertalktome-frontend
@@ -35,3 +60,6 @@ services:
 networks:
   mtm-network:
     driver: bridge
+
+volumes:
+  postgres_data:
