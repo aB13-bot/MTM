@@ -1,7 +1,8 @@
 # 第一阶段:编译构建
-FROM node:18-alpine AS build-stage
+FROM node:20-alpine AS build-stage
 WORKDIR /app
 COPY package*.json ./
+COPY package-lock.json* ./
 RUN npm install
 COPY . .
 RUN npm run build
