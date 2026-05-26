@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  # 后端 FastAPI 服务
+  backend:
+    build:
+      context: ./mothertalktome
+      dockerfile: Dockerfile
+    container_name: mtm-backend
+    restart: always
+    volumes:
+      - ./mothertalktome/data:/app/data
+      - ./mothertalktome/chroma_db:/app/chroma_db
+    env_file:
+      - ./mothertalktome/.env
+    ports:
+      - "8000:8000"
+    networks:
+      - mtm-network
+
+  # 前端 React 服务
+  frontend:
+    build:
+      context: ./mothertalktome-frontend
+      dockerfile: Dockerfile
+    container_name: mtm-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - mtm-network
+
+networks:
+  mtm-network:
+    driver: bridge
