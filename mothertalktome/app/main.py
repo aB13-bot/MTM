@@ -31,7 +31,7 @@ app.add_middleware(
         "http://localhost:8000",
         "http://47.242.160.166",       
         "http://47.242.160.166:80",    
-        "http://localhost:5173"#后端
+        "http://localhost:5173"
     ],
     allow_credentials=True,
     allow_methods=["*"],
