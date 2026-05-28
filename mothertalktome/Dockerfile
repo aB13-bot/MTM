@@ -26,7 +26,6 @@ COPY app app
 COPY alembic alembic
 COPY alembic.ini .
 COPY pyproject.toml .
-RUN /venv/bin/python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')"
 COPY init.sh .
 
 # Expose port 8000 for app and optional 9090 for prometheus metrics
