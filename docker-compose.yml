@@ -33,11 +33,14 @@ services:
     volumes:
       - ./mothertalktome/data:/app/data
       - ./mothertalktome/chroma_db:/app/chroma_db
+      - /root/models/huggingface:/root/.cache/huggingface
     env_file:
       - ./mothertalktome/.env
     environment:
       DATABASE__HOSTNAME: postgres_db
       DATABASE__PORT: 5432
+      TRANSFORMERS_CACHE: /root/.cache/huggingface
+      HF_HOME: /root/.cache/huggingface
     ports:
       - "8000:8000"
     networks:
