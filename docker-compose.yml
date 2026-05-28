@@ -41,6 +41,8 @@ services:
       DATABASE__PORT: 5432
       TRANSFORMERS_CACHE: /root/.cache/huggingface
       HF_HOME: /root/.cache/huggingface
+      TRANSFORMERS_OFFLINE: "1"
+      HF_DATASETS_OFFLINE: "1"
     ports:
       - "8000:8000"
     networks:
