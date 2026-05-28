@@ -25,7 +25,10 @@ def get_chroma_collection():
 def get_embedding_model():
     global _embedding_model
     if _embedding_model is None:
-        _embedding_model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
+        _embedding_model = SentenceTransformer(
+    'paraphrase-multilingual-MiniLM-L12-v2',
+    cache_folder='/root/.cache/huggingface/hub'
+)
     return _embedding_model
 
 async def generate_mother_reply(user_comment: str, post_content: str = "", user_memory: str = "") -> str:
