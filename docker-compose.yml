@@ -1,7 +1,7 @@
 services:
   # 1. PostgreSQL 数据库
   postgres_db:
-    image: postgres:18
+    image: postgres:16
     container_name: mtm-postgres
     restart: always
     volumes:
